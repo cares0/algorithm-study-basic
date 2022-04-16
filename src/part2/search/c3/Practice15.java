@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Practice15 {
 	
+	// Q5. 중복된 값일 경우 제일 앞쪽의 인덱스를 찾도록 수정하시오
 	static int binSearch(int[] a, int n, int key) {
 		int start = 0;
 		int end = n - 1;
@@ -11,7 +12,10 @@ public class Practice15 {
 		do {
 			int center = (start + end) / 2;
 			if(a[center] == key) {
-				return center;
+				do {
+					center--;
+				} while(a[center] == key);
+				return center + 1;
 			} else if(a[center] < key) {
 				start = center + 1;
 			} else {
