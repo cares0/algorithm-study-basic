@@ -4,11 +4,24 @@ import java.util.Scanner;
 
 public class Practice13 {
 
-	// Q1. for문을 이용하여 선형검색을 수행하시오
+	// Q2. 선형검색 과정을 상세하게 출력하는 프로그램을 작성하시오
 	static int seqSearchSen(int[] a, int n, int key) {
 		a[n] = key;
 		
+		System.out.printf("   |");
+		for(int i=0;i<a.length-1;i++) {
+			System.out.printf("%3d", i);
+		}
+		System.out.println("\n---+---------------------------");
+		
 		for(int i=0;i<a.length;i++) {
+			System.out.print("   |");
+			System.out.printf(String.format("%%%ds*\n", (i * 3) + 2), "");
+			System.out.printf("%3d|", i);
+			for(int j=0;j<a.length-1;j++) {
+				System.out.printf("%3d", a[j]);
+			}
+			System.out.println();
 			if(i != n && a[i] == key) {
 				return i;
 			}
