@@ -1,4 +1,4 @@
-package part2.search.c3;
+package part3.search.c3;
 
 import java.util.Arrays;
 import java.util.Comparator;

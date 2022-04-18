@@ -1,4 +1,4 @@
-package part2.search.c2;
+package part3.search.c2;
 
 import java.util.Scanner;
 
