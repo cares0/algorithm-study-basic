@@ -2,99 +2,105 @@ package part4.stackAndQueue.c1;
 
 public class IntStack {
 
-	private int max; // 스택 용량
-	private int ptr; // 스택 포인터
-	private int[] stk;  //스택 본체
+	public int max; // 스택에 쌓을 수 있는 데이터의 갯수
+	public int pointer; // 스택 포인터
+	public int[] stack; // 스택 본체
 	
-	// 스택이 비어있을 경우 예외
-	public class EmptyIntStackException extends RuntimeException {
-		public EmptyIntStackException() {};
+	// 스택이 비어있을 경우 던질 예외
+	public class EmptyStackException extends RuntimeException {
+		public EmptyStackException() {
+			super("스택이 비어있습니다");
+		}
 	}
 	
-	// 스택이 가득 찼을 때 예외
-	public class OverflowIntStackException extends RuntimeException {
-		public OverflowIntStackException() {}
+	// 스택이 가득 차있을 경우 던질 예외
+	public class OverflowStackException extends RuntimeException {
+		public OverflowStackException() {
+			super("스택이 가득 차있습니다");
+		}
 	}
-
+	
 	// 생성자
 	public IntStack(int capacity) {
-		ptr = 0;
+		pointer = 0;
 		max = capacity;
 		try {
-			stk = new int[max];
-		} catch (OutOfMemoryError e) {
-			max = 0;
+			stack = new int[max]; // 생성할 당시에 스택의 용량을 지정해서 초기화
+		} catch (OutOfMemoryError e) { // 스택을 만들 수 없는 경우
+			max = 0; 
 		}
-	}
-	
-	// 데이터 삽입
-	public int push(int x) throws OverflowIntStackException {
-		if(ptr >= max) {
-			throw new OverflowIntStackException();
-		}
-		return stk[ptr++] = x;
-	}
-	
-	// 데이터 꺼내기
-	public int pop() throws EmptyIntStackException {
-		if(ptr <= 0) {
-			throw new EmptyIntStackException();
-		}
-		return stk[--ptr];
 	}
 
-	// 스택의 맨 윗 데이터 검출
-	public int peek() throws EmptyIntStackException {
-		if(ptr <= 0) { // 스택이 비어있는 경우
-			throw new EmptyIntStackException();
+	// 스택에 데이터 추가 - push
+	public int push(int data) throws OverflowStackException {
+		if(pointer >= max) {
+			throw new OverflowStackException();
 		}
-		return stk[ptr - 1];
+		return stack[pointer++] = data; // data가 리턴 됨
 	}
 	
-	// 스택의 데이터 검색
-	public int indexOf(int x) {
-		for(int i=ptr - 1; i>=0; i--) {
-			if(stk[i] == x) {
-				return i; // 검색 성공
-			}
+	// 스택에 데이터 삭제 - pop
+	public int pop() throws EmptyStackException {
+		if(pointer <= 0) {
+			throw new EmptyStackException();
 		}
-		return -1; // 검색 실패
+		return stack[--pointer];
 	}
 	
-	// 스택의 데이터 모두 삭제
+	// 스택에서 데이터를 피크(맨 위 데이터를 가져옴)
+	public int peek() throws EmptyStackException {
+		if(pointer <= 0) {
+			throw new EmptyStackException();
+		}
+		return stack[pointer - 1];
+	}
+	
+	// 데이터의 인덱스를 검색
+	public int indexOf(int search) throws EmptyStackException {
+		if(pointer <= 0) {
+			throw new EmptyStackException();
+		}
+		for(int i=0; i<pointer; i++) {
+			stack[i] = search;
+			return i;
+		}
+		return -1; // 찾는 데이터가 없는 경우
+	}
+	
+	// 스택을 비움
 	public void clear() {
-		ptr = 0; // 모든 요소의 추가/삭제 등등은 모두 스택 포인터를 가지고 하기에 ptr을 0으로 수정하면 모두 삭제하는 것과 다름 없음
+		pointer = 0;
 	}
 	
-	// 스택의 용량 확인
+	// 스택의 용량을 반환
 	public int capacity() {
 		return max;
 	}
 	
-	// 스택에 쌓인 데이터 수
+	// 스택에 쌓여있는 데이터 수를 반환
 	public int size() {
-		return ptr;
+		return pointer;
 	}
 	
 	// 스택이 비어있는지
 	public boolean isEmpty() {
-		return ptr <= 0;
+		return pointer <= 0;
 	}
 	
+	// 스택이 가득 찼는지
 	public boolean isFull() {
-		return ptr >= max;
+		return pointer >= max;
 	}
 	
-	// 스택 안의 모든 데이터를 바닥 -> 꼭대기 순서로 출력
-	public void dump() {
-		if(ptr <= 0) {
-			System.out.println("스택이 비어있습니다.");
-		} else {
-			for (int i=0; i<ptr; i++) {
-				System.out.printf(stk[i] + " ");
-			}
-			System.out.println();
+	// 스택 내의 모든 데이터 조회
+	public void dump() throws EmptyStackException {
+		if(isEmpty()) {
+			throw new EmptyStackException();
 		}
+		for(int i=0; i<pointer; i++) {
+			System.out.print(stack[i] + "");
+		}
+		System.out.println();
 	}
 	
 }

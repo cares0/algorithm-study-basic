@@ -24,7 +24,7 @@ public class Practice17 {
 				x = sc.nextInt();
 				try {
 					s.push(x);
-				} catch (IntStack.OverflowIntStackException e) {
+				} catch (IntStack.OverflowStackException e) {
 					System.out.println("스택이 가득 찼습니다.");
 				}
 				break;
@@ -33,7 +33,7 @@ public class Practice17 {
 				try {
 					x = s.pop();
 					System.out.println("출력한 데이터는 " + x + "입니다.");	
-				} catch(IntStack.EmptyIntStackException e) {
+				} catch(IntStack.EmptyStackException e) {
 					System.out.println("스택이 비어있습니다.");
 				}
 				break;
@@ -42,7 +42,7 @@ public class Practice17 {
 				try {
 					x = s.peek();
 					System.out.println("맨 윗지점은 " + x + "이(가) 들어가 있습니다.");
-				} catch(IntStack.EmptyIntStackException e) {
+				} catch(IntStack.EmptyStackException e) {
 					System.out.println("스택이 비어있습니다.");
 				}
 				break;
