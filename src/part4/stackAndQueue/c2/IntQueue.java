@@ -2,85 +2,87 @@ package part4.stackAndQueue.c2;
 
 public class IntQueue {
 
-	private int max; // 큐의 용량
-	private int front; // 첫번째 요소 커서
-	private int rear; // 마지막 요소 커서
-	private int num; // 현재 데이터 수 - 큐가 비어있거나 가득찬 경우를 위해 설정해야함
-	// 가득차든 비어있든 front와 near가 동일하기 때문임
-	private int[] que; // 큐 본체
+	private int max; 
+	private int front; // dequeue 되는 지점
+	private int rear; // inqueue되는 지점
+	private int number; // 큐 안의 데이터의 갯수를 표시
+	private int[] queue; // 큐 본체
 	
-	// 큐가 비어있을 경우 예외
-	public class EmptyIntQueException extends Exception {
-		public EmptyIntQueException() {
-			
-		}
-	}
-	
-	// 큐가 가득 찼을 경우 예외
-	public class OverflowIntQueException extends Exception {
-		public OverflowIntQueException() {
-			
-		}
-	}
-	
-	// 생성자
 	public IntQueue(int capacity) {
-		num = front = rear = 0;
 		max = capacity;
+		front = rear = number = 0;
 		try {
-			que = new int[max];
+			queue = new int[max];
 		} catch (OutOfMemoryError e) {
 			max = 0;
 		}
 	}
 	
-	// 데이터 인큐
-	public int enque(int x) throws OverflowIntQueException {
-		if(num >= max) {
-			throw new OverflowIntQueException();
+	public class OverflowQueueException extends RuntimeException {
+		public OverflowQueueException() {
+			super("큐가 가득 차있습니다.");
 		}
-		que[rear++] = x;
-		num++;
-		if(rear == max) {
+	}
+	
+	public class EmptyQueueException extends RuntimeException {
+		public EmptyQueueException() {
+			super("큐가 비어있습니다.");
+		}
+	}
+	
+	public boolean isEmpty() {
+		return number <= 0;
+	}
+	
+	public boolean isFull() {
+		return number >= max;
+	}
+	
+	public int enqueue(int data) throws OverflowQueueException {
+		if(isFull()) {
+			throw new OverflowQueueException();
+		}
+		queue[rear++] = data; // rear 지점에 데이터 삽입 후 rear값 +1
+		number++; // 데이터의 총 갯수 +1
+		if(rear >= max) { // 만약 rear지점이 max와 같아진다면 다시 0으로 초기화
 			rear = 0;
 		}
-		return x;
+		return data;
 	}
-
-	// 데이터 디큐
-	public int deque() throws EmptyIntQueException {
-		if(num <= 0) {
-			throw new EmptyIntQueException();
+	
+	public int dequeue() throws EmptyQueueException {
+		if(isEmpty()) {
+			throw new EmptyQueueException();
 		}
-		int x = que[front++];
-		num--;
-		if(front == max) {
+		int deletedData = queue[front++]; // front지점의 데이터 삭제처리(실제 삭제되는건 아님)
+		number--; // 데이터의 총 갯수 -1
+		if(front >= max) { // 만약 front지점이 max와 같아진다면 다시 0으로 초기화
 			front = 0;
 		}
-		return x;
+		return deletedData;
 	}
 	
-	// 큐에서 데이터를 피크(front 데이터를 출력)
-	public int peek() throws EmptyIntQueException {
-		if(num <= 0) {
-			throw new EmptyIntQueException();
+	public int peek() throws EmptyQueueException {
+		if(isEmpty()) {
+			throw new EmptyQueueException();
 		}
-		return que[front];
+		return queue[front];
 	}
 	
-	// 데이터 검색
-	public int indexOf(int x) {
-		for(int i=0; i<num; i++) {
-			int idx = (i + front) % max;
-			if(que[idx] == x) {
-				return idx;
+	public int indexOf(int data) throws EmptyQueueException {
+		if(isEmpty()) {
+			throw new EmptyQueueException();
+		}
+		for(int i=front; i<front + number; i++) {
+			if(queue[i] == data) {
+				return i;
 			}
 		}
 		return -1;
 	}
 	
 	public void clear() {
-		num = front = rear = 0;
+		front = rear = number = 0;
 	}
 	
 	public int capacity() {
@@ -88,25 +90,16 @@ public class IntQueue {
 	}
 	
 	public int size() {
-		return num;
+		return number;
 	}
 	
-	public boolean isEmpty() {
-		return num <= 0;
-	}
-	
-	public boolean isFull() {
-		return num >= max;
-	}
-	
-	public void dump() {
-		if(num <= 0) {
-			System.out.println("큐가 비어있습니다.");
-		} else {
-			for(int i = 0; i < num; i++) {
-				System.out.println(que[(i+front) % max] + " ");
-			}
-			System.out.println();
+	public void dump() throws EmptyQueueException {
+		if(isEmpty()) {
+			throw new EmptyQueueException();
 		}
+		for(int i=front; i<front + number; i++) {
+			System.out.print(queue[i] + " ");
+		}
+		System.out.println();
 	}
 }
