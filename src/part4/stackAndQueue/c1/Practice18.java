@@ -6,7 +6,7 @@ public class Practice18 {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		Gstack<String> s = new Gstack<String>(64);
+		GStack<String> s = new GStack<String>(3);
 		
 		while(true) {
 			System.out.println("현재 데이터 수 : " + s.size() + "/" + s.capacity());
@@ -24,8 +24,8 @@ public class Practice18 {
 				x = sc.next();
 				try {
 					s.push(x);
-				} catch (IntStack.OverflowIntStackException e) {
-					System.out.println("스택이 가득 찼습니다.");
+				} catch (GStack.OverflowStackException e) {
+					System.out.println(e.getMessage());
 				}
 				break;
 				
@@ -33,8 +33,8 @@ public class Practice18 {
 				try {
 					x = s.pop();
 					System.out.println("출력한 데이터는 " + x + "입니다.");	
-				} catch(IntStack.EmptyIntStackException e) {
-					System.out.println("스택이 비어있습니다.");
+				} catch(GStack.EmptyStackException e) {
+					System.out.println(e.getMessage());
 				}
 				break;
 			
@@ -42,12 +42,16 @@ public class Practice18 {
 				try {
 					x = s.peek();
 					System.out.println("맨 윗지점은 " + x + "이(가) 들어가 있습니다.");
-				} catch(IntStack.EmptyIntStackException e) {
-					System.out.println("스택이 비어있습니다.");
+				} catch(GStack.EmptyStackException e) {
+					System.out.println(e.getMessage());
 				}
 				break;
 			case 4:
-				s.dump();
+				try {
+					s.dump();
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case 5:
 				if(s.isEmpty()) {
@@ -73,7 +77,6 @@ public class Practice18 {
 			}
 			
 		}
-	
 
 	}
 
