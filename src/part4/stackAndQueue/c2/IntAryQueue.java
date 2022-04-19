@@ -97,6 +97,4 @@ public class IntAryQueue {
 		System.out.println();
 	}
 	
-	
-
 }
