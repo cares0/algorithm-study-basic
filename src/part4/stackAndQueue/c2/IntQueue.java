@@ -73,10 +73,10 @@ public class IntQueue {
 		if(isEmpty()) {
 			throw new EmptyQueueException();
 		}
-		for(int i=front; i<front + number; i++) {
-			if(queue[i] == data) {
-				return i;
-			}
+		for(int i=0; i<number; i++) {
+		      int idx = (i + front) % max; 
+		      if(queue[idx] == data) {
+		  	   return idx; }
 		}
 		return -1;
 	}
@@ -97,9 +97,11 @@ public class IntQueue {
 		if(isEmpty()) {
 			throw new EmptyQueueException();
 		}
-		for(int i=front; i<front + number; i++) {
-			System.out.print(queue[i] + " ");
+		for(int i=0; i<number; i++) {
+		    int idx = (i + front) % max; 
+		    System.out.print(queue[idx] + " ");  
 		}
 		System.out.println();
 	}
+	
 }
