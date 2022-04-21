@@ -104,4 +104,18 @@ public class IntQueue {
 		System.out.println();
 	}
 	
+	// Q5. 배열의 인덱스를 반환하는 것이 아니라, 큐 안에서 몇번 째에 있는지를 반환하도록 메서드를 작성하시오
+	public int search(int search) throws EmptyQueueException {
+		if(isEmpty()) {
+			throw new EmptyQueueException();
+		}
+		for(int i=0; i<number; i++) {
+		    int idx = (i + front) % max; 
+		    if(queue[idx] == search) {
+		    	return i + 1; 
+		    }
+		}
+		return -1;
+	}
+	
 }
